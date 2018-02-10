@@ -1,7 +1,7 @@
 import geopy
 from urllib.request import urlopen
 
-link = "https://www.tesla.com/findus/list/chargers/United+States"
+link = "https://www.tesla.com/findus/list/superchargers/United%20States"
 f = urlopen(link)
 
 def extract(line):
@@ -22,7 +22,7 @@ for line in f:
                   addressList.append(extract(line))
 answerList = [", ".join([nameList[i],addressList[i],areaList[i]]) for i in range(len(nameList))]
 answerList = [elem for elem in answerList if "coming soon" not in elem]
-with open("data.txt",'w') as temp:
+with open("stationNames.txt",'w') as temp:
     for line in answerList:   
         temp.write(line + '\n')
 
