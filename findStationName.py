@@ -1,7 +1,7 @@
 import geopy
 from urllib.request import urlopen
 
-link = "https://www.tesla.com/findus/list/superchargers/United%20States"
+link = "https://www.tesla.com/findus/list/chargers/United+States"
 f = urlopen(link)
 
 def extract(line):

@@ -1,4 +1,5 @@
 from geopy.geocoders import GoogleV3
+from geopy.exc import GeocoderTimedOut
 import sqlite3
 from time import sleep
 
@@ -27,7 +28,14 @@ class Cache:
                     (address, latitude, longitude))
         self.conn.commit()
 
-geolocator = GoogleV3("AIzaSyDDwvAnPVqH0cK_-9cYJDxUsanFgjXJduw")
+def geocode(place):
+    try:
+        return geolocator.geocode(place)
+    except GeocoderTimedOut:
+        sleep(1)
+        return geocode(place)
+
+geolocator = GoogleV3("AIzaSyBnH9lTfwJ3K_7IBh9TRmtLz3ehwt73C1M")
 with open("stationNames.txt",'r') as source:
     for line in source:
         cache = Cache()
@@ -35,7 +43,7 @@ with open("stationNames.txt",'r') as source:
         if location:
             continue
         else:
-            location = geolocator.geocode(line)
+            location = geocode(line)
             if location != None: 
                 cache.save_to_cache(line, location.latitude, location.longitude)
             else:
